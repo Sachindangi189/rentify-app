@@ -7,7 +7,7 @@ exports.homes = async (req,res) =>{
   const allListing = await Listing.find({});
   res.render('home',{allListing});
 }
-// ya route h new home ko add k liye
+// ya route h new home ko add k liye form show krta h
 exports.addNew = (req,res) =>{
   res.render('addNew');
 }
@@ -19,3 +19,46 @@ exports.showHome = async (req,res) =>{
   res.render('show',{listing});
 }
 
+// ya route home ko add krne k liye h
+exports.addHome = async (req,res) =>{
+  const {title,description,image,price,location,country} = req.body;
+  const newListing = new Listing({
+    title,
+    description,
+    image,
+    price,
+    location,
+    country
+  });
+  await newListing.save();
+  res.redirect('/listing');
+}
+
+// edit krna k liye 
+exports.editHome = async (req, res) => {
+  const { id } = req.params;
+  const listing = await Listing.findById(id);
+  res.render('edit', { listing });
+};
+
+// put request for updating the home
+exports.updateHome = async (req, res) => {
+  const { id } = req.params;
+  const { title, description, image, price, location, country } = req.body;
+  await Listing.findByIdAndUpdate(id, {
+    title,
+    description,
+    image,
+    price,
+    location,
+    country
+  });
+  res.redirect(`/listing/${id}`);
+};
+
+// ya route home ko delete krne k liye h
+exports.deleteHome = async (req, res) => {
+  const { id } = req.params;
+  await Listing.findByIdAndDelete(id);
+  res.redirect('/listing');
+};

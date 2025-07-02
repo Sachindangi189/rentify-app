@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Home</title>
-</head>
+<% layout('layouts/boilerPlate') %>
+<body>
 <body>
   <h3>Add New Home</h3>
-  <form action="/listings" method="post">
+  <form action="/listing" method="post">
     <br><br>
-    <textarea name="description" placeholder="enter description"></textarea><br><br>
     <input type="text" placeholder="enter tittle" name="title"><br><br>
-    <input type="text" placeholder="enter url/link" name="image"><br><br>
+    <textarea name="description" placeholder="enter description"></textarea><br><br>
+    <input type="text" placeholder="enter photo url/link" name="image"><br><br>
     <input type="number" placeholder="price" name="price"><br><br>
     <input type="text" name="location" placeholder="location"><br><br>
     <input type="text" name="country" placeholder="country"><br><br>
@@ -19,4 +14,3 @@
   </form>
   
 </body>
-</html>
