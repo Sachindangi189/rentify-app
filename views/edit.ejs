@@ -1,15 +1,49 @@
 <% layout('layouts/boilerPlate') %>
 <body>
 <body>
+   <div class="row mt-3">
+    <class class="col-8 offset-2">
   <h3>Edit Home</h3>
   <form action="/listing/<%= listing._id %>?_method=PUT"  method="post">
-    <br><br>
-    <input type="text" value="<%=listing.title%>" name="title"><br><br>
-    <textarea name="description"><%=listing.description%></textarea><br><br>
-    <input type="text" value="<%=listing.image%>" name="image"><br><br>
-    <input type="number" value="<%=listing.price%>" name="price"><br><br>
-    <input type="text" name="location" value="<%=listing.location%>"><br><br>
-    <input type="text" name="country" value="<%=listing.country%>"><br><br>
-    <button type="submit">Update</button>
+    <div  class="mb-3">
+    <label for="title" class="form-lable">Title</label>
+    <input type="text" value="<%=listing.title%>" name="title" class="form-control" required>
+    </div>
+
+    <div  class="mb-3">
+    <label for="description" class="form-lable">Description</label>
+    <textarea name="description" class="form-control"><%=listing.description%></textarea>
+    </div>
+
+    <div  class="mb-3">
+    <label for="image" class="form-lable">Image link</label>
+    <input type="text" value="<%=listing.image%>" name="image" class="form-control">
+    </div>
+
+    <div  class="mb-3">
+    <label for="price" class="form-lable">Price</label>
+    <input type="number" value="<%=listing.price%>" name="price" class="form-control">
+    </div>
+    
+    <div class="row">
+    <div  class="mb-3 col-md-4">
+    <div  class="mb-3">
+    <label for="location" class="form-lable">location</label>
+    <input type="text" name="location" value="<%=listing.location%>">
+    </div>
+    </div>
+
+    <div class="mb-3 col-md-8">
+    <div  class="mb-3">
+    <label for="country" class="form-lable">Country</label>
+    <input type="text" name="country" value="<%=listing.country%>">
+    </div>
+    </div>
+    </div>  
+
+    
+    <button type="submit" class="btn btn-dark mt-3 add-btn">Update</button>
   </form>
+  </div>
+  </div>
 </body>

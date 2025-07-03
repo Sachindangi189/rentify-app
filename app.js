@@ -10,13 +10,12 @@ const { error } = require('console');
 
 const app = express();
 
-
+app.use(express.static(path.join(__dirname, 'public')));
 // set views
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs'); 
 app.set('views','views');
 
-app.use(express.static(path.join(__dirname, 'public')));
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
