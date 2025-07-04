@@ -25,7 +25,10 @@ exports.addHome = async (req,res) =>{
   const newListing = new Listing({
     title,
     description,
-    image,
+    image: {
+      url: image, // Assuming image is a URL
+      filename: "user-uploaded"// Extracting filename from URL
+    },
     price,
     location,
     country

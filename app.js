@@ -6,16 +6,19 @@ const mthodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 
 const homeController = require('./routes/homeRouter');
+const errorRoutes = require('./routes/errorRoutes');
 const { error } = require('console');
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, 'public')));
+
 // set views
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs'); 
 app.set('views','views');
 
+// set static files
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -34,6 +37,7 @@ async function main(){
 }
 
 app.use('/',homeController);
+app.use(errorRoutes);
 
 
 const PORT = 3000;

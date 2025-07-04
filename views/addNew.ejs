@@ -5,7 +5,7 @@
     <class class="col-8 offset-2">
   <h3>Add New Home</h3>
 
-  <br action="/listing" method="post">
+  <form action="/listing" method="post" class="needs-validation" novalidate>
     <div  class="mb-3">
     <label for="title" class="form-lable">Title</label>
     <input type="text" placeholder="enter tittle" name="title" class="form-control" required>
@@ -13,7 +13,7 @@
 
     <div  class="mb-3">
     <label for="description" class="form-lable">description</label>
-    <textarea name="description" placeholder="enter description" class="form-control"></textarea>
+    <textarea name="description" placeholder="enter description" class="form-control" required></textarea>
     </div>
 
     <div  class="mb-3">
@@ -23,21 +23,20 @@
 
     <div  class="mb-3">
     <label for="price" class="form-lable">Price</label>
-    <input type="number" placeholder="price" name="price" class="form-control">
+    <input type="number" placeholder="price" name="price" class="form-control" required>
     </div>
      
     <div class="row">
     <div  class="mb-3 col-md-4">
     <label for="location" class="form-lable">Location</label>
-    <input type="text" name="location" placeholder="location" class="form-control">
+    <input type="text" name="location" placeholder="location" class="form-control" required>
     </div>
 
     <div class="mb-3 col-md-8">
     <label for="country" class="form-lable">Country</label>
-    <input type="text" name="country" placeholder="country" class="form-control">
+    <input type="text" name="country" placeholder="country" class="form-control " required>
     </div>
     </div>
-    </br>
     <button type="submit" class="btn btn-dark add-btn" >Add Home</button>
   </form>
 </div>
