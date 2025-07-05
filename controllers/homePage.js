@@ -1,5 +1,6 @@
 const path = require('path');
 const Listing = require('../models/listing');
+const Review = require('../models/review');
 // const initData = require('../initliseDatabase/data');
 
 // ya route home ki list show krta h
@@ -15,7 +16,7 @@ exports.addNew = (req,res) =>{
 // ya route individual home ki details k liye
 exports.showHome = async (req,res) =>{
   let {id} = req.params;
-  const listing = await Listing.findById(id);
+  const listing = await Listing.findById(id).populate('reviews');
   res.render('show',{listing});
 }
 
@@ -65,3 +66,16 @@ exports.deleteHome = async (req, res) => {
   await Listing.findByIdAndDelete(id);
   res.redirect('/listing');
 };
+
+// ya route review ko add krne k liye h
+exports.addReview = async (req, res) => {
+  let listing =  await Listing.findById(req.params.id);
+  let newReview = new Review(req.body.Review);
+  listing.reviews.push(newReview);
+
+  await newReview.save();
+  await listing.save();
+  
+  res.redirect(`/listing/${listing._id}`);
+
+}
