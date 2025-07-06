@@ -9,7 +9,6 @@ homeRoute.get('/listing/new', homePath.addNew);
 homeRoute.post('/listing', homePath.addHome);
 homeRoute.get('/listing/:id/edit', homePath.editHome);
 homeRoute.get('/listing/:id', homePath.showHome);
-homeRoute.post('/listing/:id/review', homePath.addReview);
 homeRoute.put('/listing/:id', homePath.updateHome);
 homeRoute.delete('/listing/:id', homePath.deleteHome);
 

@@ -6,6 +6,7 @@ const mthodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 
 const homeController = require('./routes/homeRouter');
+const reviewController = require('./routes/reviews');
 const errorRoutes = require('./routes/errorRoutes');
 const { error } = require('console');
 
@@ -37,6 +38,7 @@ async function main(){
 }
 
 app.use('/',homeController);
+app.use('/',reviewController);
 app.use(errorRoutes);
 
 

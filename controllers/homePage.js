@@ -66,16 +66,3 @@ exports.deleteHome = async (req, res) => {
   await Listing.findByIdAndDelete(id);
   res.redirect('/listing');
 };
-
-// ya route review ko add krne k liye h
-exports.addReview = async (req, res) => {
-  let listing =  await Listing.findById(req.params.id);
-  let newReview = new Review(req.body.Review);
-  listing.reviews.push(newReview);
-
-  await newReview.save();
-  await listing.save();
-  
-  res.redirect(`/listing/${listing._id}`);
-
-}
