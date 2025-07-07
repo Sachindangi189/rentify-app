@@ -4,9 +4,15 @@ const mongoose = require('mongoose');
 const path = require('path');
 const mthodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
+const session = require('express-session');
+const flash = require('connect-flash');
+const passport = require('passport');
+const localStrategy = require('passport-local');
+const user = require('./models/user');
 
 const homeController = require('./routes/homeRouter');
-const reviewController = require('./routes/reviews');
+const reviewController = require('./routes/reviewsRoute');
+const loginRoute = require('./routes/loginRoute');
 const errorRoutes = require('./routes/errorRoutes');
 const { error } = require('console');
 
@@ -37,8 +43,38 @@ async function main(){
   await mongoose.connect(MONGO_URL);
 }
 
+const sessionOptions = {
+  secret: "thisshouldbeasecret",
+  resave : false,
+  saveUninitialized : true,
+  cookie: {
+    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
+  }
+}
+app.use(session(sessionOptions));
+app.use(flash());
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new localStrategy(user.authenticate()));
+
+passport.serializeUser(user.serializeUser());
+passport.deserializeUser(user.deserializeUser());
+
+
+
+// Custom middleware to set flash messages
+app.use((req, res, next) => {
+  res.locals.success = req.flash('success');
+  res.locals.update = req.flash('update');
+  next();
+});
+
 app.use('/',homeController);
 app.use('/',reviewController);
+app.use('/',loginRoute);
 app.use(errorRoutes);
 
 

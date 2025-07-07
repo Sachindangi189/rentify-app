@@ -35,6 +35,7 @@ exports.addHome = async (req,res) =>{
     country
   });
   await newListing.save();
+  req.flash('success', 'Home added successfully!');
   res.redirect('/listing');
 }
 
@@ -57,6 +58,7 @@ exports.updateHome = async (req, res) => {
     location,
     country
   });
+  req.flash('update', 'Home updated successfully!');
   res.redirect(`/listing/${id}`);
 };
 
@@ -64,5 +66,6 @@ exports.updateHome = async (req, res) => {
 exports.deleteHome = async (req, res) => {
   const { id } = req.params;
   await Listing.findByIdAndDelete(id);
+  req.flash('success', 'Home deleted successfully!');
   res.redirect('/listing');
 };
