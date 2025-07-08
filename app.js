@@ -69,6 +69,7 @@ passport.deserializeUser(user.deserializeUser());
 app.use((req, res, next) => {
   res.locals.success = req.flash('success');
   res.locals.update = req.flash('update');
+  res.locals.currentUser = req.user; // Make currentUser available in all views
   next();
 });
 

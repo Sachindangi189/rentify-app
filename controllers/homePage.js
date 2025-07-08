@@ -1,6 +1,7 @@
 const path = require('path');
 const Listing = require('../models/listing');
 const Review = require('../models/review');
+const { isLoggedIn  } = require('../middleware');
 // const initData = require('../initliseDatabase/data');
 
 // ya route home ki list show krta h
@@ -9,9 +10,12 @@ exports.homes = async (req,res) =>{
   res.render('home',{allListing});
 }
 // ya route h new home ko add k liye form show krta h
-exports.addNew = (req,res) =>{
-  res.render('addNew');
-}
+exports.addNew = (req, res, next) => {
+  isLoggedIn(req, res, () => {
+    res.render('addNew');
+  });
+};
+
 
 // ya route individual home ki details k liye
 exports.showHome = async (req,res) =>{
@@ -40,14 +44,14 @@ exports.addHome = async (req,res) =>{
 }
 
 // edit krna k liye 
-exports.editHome = async (req, res) => {
+exports.editHome = [isLoggedIn, async (req, res) => {
   const { id } = req.params;
   const listing = await Listing.findById(id);
   res.render('edit', { listing });
-};
+}];
 
 // put request for updating the home
-exports.updateHome = async (req, res) => {
+exports.updateHome = [isLoggedIn, async (req, res) => {
   const { id } = req.params;
   const { title, description, image, price, location, country } = req.body;
   await Listing.findByIdAndUpdate(id, {
@@ -60,12 +64,12 @@ exports.updateHome = async (req, res) => {
   });
   req.flash('update', 'Home updated successfully!');
   res.redirect(`/listing/${id}`);
-};
+}]
 
 // ya route home ko delete krne k liye h
-exports.deleteHome = async (req, res) => {
+exports.deleteHome = [isLoggedIn, async (req, res) => {
   const { id } = req.params;
   await Listing.findByIdAndDelete(id);
   req.flash('success', 'Home deleted successfully!');
   res.redirect('/listing');
-};
+}];
