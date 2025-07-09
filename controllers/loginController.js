@@ -1,6 +1,7 @@
 const path = require('path');
 const User = require('../models/user');
 const passport = require('passport');
+const { saveRedirectUrl } = require('../middleware');
 
 exports.getSignup = (req, res) => {
     res.render('signup', { title: 'Sign Up' });
@@ -34,17 +35,18 @@ exports.getLogin = (req, res) => {
     res.render('login', { title: 'Login' });
 }
 
-exports.postLogin = (req, res, next) => {
+exports.postLogin = [saveRedirectUrl,(req, res, next) => {
   passport.authenticate('local', function(err, user, info) {
     if (err) { return next(err); }
     if (!user) { return res.redirect('/login'); }
     req.logIn(user, function(err) {
       if (err) { return next(err); }
       req.flash('success', 'Logged in successfully!');
-      return res.redirect('/listing');
+      let redirectUrl = res.locals.redirectUrl || '/listing'; // Default redirect URL
+      return res.redirect(redirectUrl);
     });
   })(req, res, next);
-};
+}];
 
 
 
