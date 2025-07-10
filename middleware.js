@@ -30,15 +30,15 @@ module.exports.isOwner = async (req, res, next) => {
 }
 
 module.exports.isReviewAuthor = async (req, res, next) => {
-  const { reviewsId } = req.params;
+  const { id, reviewsId } = req.params;
   const review = await Review.findById(reviewsId);
   if (!review) {
     req.flash('error', 'Review not found');
     return res.redirect('/listing');
   }
   if (!review.author.equals(res.locals.currentUser._id)) {
-    req.flash('error', 'You do not have permission to do that');
-    return res.redirect(`/listing/${review.listing}`);
+    req.flash('success', 'You do not have permission to do that');
+    return res.redirect(`/listing/${id}`);
   }
   next();
 }

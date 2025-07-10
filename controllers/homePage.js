@@ -19,11 +19,10 @@ exports.addNew = (req, res, next) => {
 
 // ya route individual home ki details k liye
 exports.showHome = async (req, res) => {
-  let { id } = req.params;
   const listing = await Listing.findById(req.params.id)
      .populate({
       path: 'reviews',
-      populate: { path: 'author' }  // <- author populate ho raha
+      populate: { path: 'author' }
     })
     .populate('owner');
 
@@ -36,6 +35,8 @@ exports.showHome = async (req, res) => {
 
 // ya route home ko add krne k liye h
 exports.addHome = async (req,res) =>{
+  let url = req.file.path; // Assuming the file is uploaded to a local path
+  let filename = req.file.filename; // Extracting filename from the uploaded file
   const {title,description,image,price,location,country} = req.body;
   const newListing = new Listing({
     title,
@@ -48,7 +49,8 @@ exports.addHome = async (req,res) =>{
     location,
     country
   });
-  newListing.owner = req.user._id; // Set the owner to the logged-in user
+  newListing.owner = req.user._id; 
+  newListing.image = {url: url, filename: filename}; // Storing the image URL and filename
   await newListing.save();
   req.flash('success', 'Home added successfully!');
   res.redirect('/listing');
