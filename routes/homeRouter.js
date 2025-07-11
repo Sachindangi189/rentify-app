@@ -12,7 +12,7 @@ homeRoute.get('/listing/new', homePath.addNew);
 homeRoute.post('/listing',upload.single('listing[image]') ,homePath.addHome);
 homeRoute.get('/listing/:id/edit', homePath.editHome);
 homeRoute.get('/listing/:id', homePath.showHome);
-homeRoute.put('/listing/:id', homePath.updateHome);
+homeRoute.put('/listing/:id',upload.single('listing[image]'), homePath.updateHome);
 homeRoute.delete('/listing/:id', homePath.deleteHome);
 
 module.exports = homeRoute;

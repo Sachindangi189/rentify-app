@@ -60,14 +60,20 @@ exports.addHome = async (req,res) =>{
 exports.editHome = [isLoggedIn,isOwner, async (req, res) => {
   const { id } = req.params;
   const listing = await Listing.findById(id);
-  res.render('edit', { listing });
+     // Cloudinary image transformation for preview
+    let orgImage = listing.image?.url || '';
+    if (orgImage.includes('/upload')) {
+      orgImage = orgImage.replace('/upload', '/upload/w_100,h_100');
+    }
+
+  res.render('edit', { listing,orgImage});
 }];
 
 // put request for updating the home
 exports.updateHome = [isLoggedIn,isOwner, async (req, res) => {
   const { id } = req.params;
   const { title, description, image, price, location, country } = req.body;
-  await Listing.findByIdAndUpdate(id, {
+  let conlisting = await Listing.findByIdAndUpdate(id, {
     title,
     description,
     image,
@@ -75,6 +81,15 @@ exports.updateHome = [isLoggedIn,isOwner, async (req, res) => {
     location,
     country
   });
+  // If a new file is uploaded, update the image field
+  // Assuming req.file contains the uploaded file information
+  if(typeof req.file !== 'undefined'){
+   let url = req.file.path; // Assuming the file is uploaded to a local path
+  let filename = req.file.filename;
+    conlisting.image = { url: url, filename: filename }; // Storing the image URL and filename
+    await conlisting.save();
+  }
+
   req.flash('update', 'Home updated successfully!');
   res.redirect(`/listing/${id}`);
 }]
