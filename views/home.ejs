@@ -1,9 +1,191 @@
 <% layout('layouts/boilerPlate') %>
-<body>
-  <h1>
+  <!-- <h1>
    list of homes
-  </h1>
-  <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 ">
+  </h1> -->
+  <style>
+   /* Scrollable container */
+.filter-bar {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  padding: 10px 20px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  border-bottom: 1px solid #ccc;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+/* Individual filter item */
+.filter {
+  min-width: 80px;
+  flex: 0 0 auto;
+  text-align: center;
+  scroll-snap-align: start;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 12px;
+  opacity: 0.8;
+  transition: 0.2s ease;
+}
+
+.filter:hover {
+  opacity: 1;
+  background-color: #f5f5f5;
+}
+
+.filter i {
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.filter p {
+  font-size: 12px;
+  margin: 0;
+}
+
+/* ✅ Tax toggle style inside scroll */
+.tax-toggle {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border: 1px solid #ccc;
+  border-radius: 9999px; /* pill shape */
+  background-color: #f8f9fa;
+  min-width: max-content;
+  height: 50px;
+  white-space: nowrap;
+  font-size: 14px;
+  transition: background 0.3s, box-shadow 0.2s;
+}
+
+.tax-toggle:hover {
+  background-color: #e9ecef;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+}
+
+.tax-toggle .form-check-input {
+  width: 42px;
+  height: 24px;
+  margin-left: 0;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.tax-toggle .form-check-label {
+  cursor: pointer;
+  user-select: none;
+  font-weight: 500;
+  gap: 10px;
+}
+
+/* Responsive tweak */
+@media (max-width: 768px) {
+  .tax-toggle {
+    padding: 8px 12px;
+    height: 44px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .filter {
+    min-width: 70px;
+    padding: 6px;
+  }
+
+  .filter i {
+    font-size: 18px;
+  }
+
+  .filter p {
+    font-size: 10px;
+  }
+
+  .tax-toggle {
+    font-size: 10px;
+    padding: 6px 10px;
+  }
+}
+
+/* Optional: hide scroll bar */
+.filter-bar::-webkit-scrollbar {
+  display: none;
+}
+.filter-bar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+  </style>
+
+  <div id="filters" class="filter-bar">
+    <div class="filter">
+     <div><i class="fa-solid fa-fire"></i></div>
+      <p>Trending</p>
+    </div>
+
+     <div class="filter">
+     <div><i class="fa-solid fa-hotel"></i></div>
+      <p>Rooms</p>
+    </div>
+    
+     <div class="filter">
+     <div><i class="fa-solid fa-mountain-city"></i></div>
+      <p>Iconic City</p>
+    </div>
+
+     <div class="filter">
+     <div><i class="fa-solid fa-mountain"></i></div>
+      <p>Mountains</p>
+    </div>
+
+     <div class="filter">
+     <div><i class="fa-solid fa-person-swimming"></i></div>
+      <p>Amazing Pools</p>
+    </div>
+
+     <div class="filter">
+     <div><i class="fa-brands fa-fort-awesome"></i></div>
+      <p>Castles</p>
+    </div>
+
+     <div class="filter">
+     <div><i class="fa-solid fa-campground"></i></div>
+      <p>Camping</p>
+    </div>
+
+     <div class="filter">
+     <div><i class="fa-solid fa-cow"></i></div>
+      <p>Farms</p>
+    </div>
+
+    <div class="filter">
+     <div><i class="fa-solid fa-person-snowboarding"></i></div>
+      <p>Arctic</p>
+    </div>
+
+     <div class="filter">
+     <div><i class="fa-solid fa-igloo"></i></div>
+      <p>Domes</p>
+    </div>
+
+    <div class="filter">
+     <div><i class="fa-solid fa-sailboat"></i></div>
+      <p>Boats</p>
+    </div>
+
+    <div class="tax-toggle">
+      <div class="form-check-reverse form-switch">
+  <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+  <label class="form-check-label" for="switchCheckDefault">display total after taxes</label>
+</div>
+    </div>
+
+  </div>
+  <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3 ">
    <% for(let listing of allListing) { %>
     <a href="/listing/<%=listing._id%>" class="listings-link">
   <div class="card col listing-card">
@@ -16,10 +198,34 @@
     <p class="card-text">
       <b><%= listing.title %></b><br>
      &#8377; <%= listing.price.toLocaleString('en-IN') %>/night
+     <i class="tax-info">&nbsp; &nbsp; + 18% GST</i>
     </p>
   </div>
 </div>
  <% } %>
   </div>
 </a>
-</body>
+
+
+<script>
+ document.querySelectorAll('.filter').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.filter').forEach(f => f.classList.remove('active'));
+    item.classList.add('active');
+  });
+});
+
+  let totalTax = document.getElementById("switchCheckDefault");
+  totalTax.addEventListener('click', () => {
+    let taxInfo = document.getElementsByClassName('tax-info');
+    for(info of taxInfo){
+      if(info.style.display != 'inline'){
+      info.style.display = "inline";
+      }else{
+        info.style.display = "none";
+      }
+    }
+  });
+
+
+</script>

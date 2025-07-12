@@ -47,7 +47,7 @@ exports.addHome = async (req,res) =>{
     },
     price,
     location,
-    country
+    country,
   });
   newListing.owner = req.user._id; 
   newListing.image = {url: url, filename: filename}; // Storing the image URL and filename
