@@ -1,5 +1,5 @@
 # rentify-app
-Rentify is a full-stack web application inspired by Airbnb. It allows users to list, search, and book rental properties around the world.
+Rentify is a full-stack web application. It allows users to list, search, and book rental properties around the world.
 ## Tech Stack
 - Node.js + Express (Backend)
 - MongoDB (Database)
